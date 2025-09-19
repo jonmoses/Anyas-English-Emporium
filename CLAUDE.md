@@ -55,6 +55,29 @@ The platform uses Vimeo for video hosting with the following features:
 - `/src/components/VideoPlayer.tsx` - Main video player component
 - `/src/components/VideoModal.tsx` - Fullscreen video modal
 - `/supabase/migrations/` - Database schema migrations
+- `/scripts/import-vimeo-videos.js` - Automated video import from Vimeo to database
+
+### Adding New Videos
+
+To import videos from Vimeo to the database:
+
+1. **Upload videos to your Vimeo account**
+2. **Run the import script**: `node scripts/import-vimeo-videos.js`
+   - Automatically fetches all videos from your Vimeo account
+   - Extracts metadata (title, description, duration, thumbnails)
+   - Categorizes videos based on title/description keywords
+   - Sets difficulty levels (beginner/intermediate/advanced)
+   - Inserts new videos and updates existing ones
+   - Handles duplicates gracefully
+
+**Required Environment Variables** (in `.env.local`):
+- `VIMEO_ACCESS_TOKEN` - Your Vimeo API access token
+- `NEXT_PUBLIC_VIMEO_CLIENT_ID` - Your Vimeo client ID
+- `SUPABASE_SERVICE_ROLE_KEY` - Supabase service role key (bypasses RLS for admin operations)
+
+The script automatically categorizes videos using keywords:
+- **Categories**: grammar, vocabulary, pronunciation, conversation, business, listening, writing, reading, general
+- **Levels**: beginner (default), intermediate, advanced
 
 ## Planned Features
 
