@@ -1,7 +1,18 @@
 'use client'
 
-import { useState, useCallback, useRef } from 'react'
-import ReactPlayer from 'react-player'
+import { useState, useCallback } from 'react'
+import _ReactPlayer from 'react-player'
+
+// Use recommended type casting approach from react-player GitHub issues
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const ReactPlayer = _ReactPlayer as any
+
+// Define proper interface types for callback functions
+interface ProgressState {
+  played: number
+  playedSeconds: number
+  loaded: number
+}
 import { VideoPlayerProps } from '@/types/video'
 import VimeoAPI from '@/lib/vimeo'
 
@@ -18,7 +29,8 @@ export default function VideoPlayer({
   const [duration, setDuration] = useState<number | null>(null)
   const [playedSeconds, setPlayedSeconds] = useState(0)
 
-  const playerRef = useRef<ReactPlayer>(null)
+  // Remove ref for now - not needed for basic video playback
+  // const playerRef = useRef<ReactPlayer>(null)
 
   // Create the Vimeo URL for react-player
   const vimeoUrl = `https://vimeo.com/${video.vimeo_id}`
@@ -34,7 +46,7 @@ export default function VideoPlayer({
     console.error('Video player error:', error)
   }, [])
 
-  const handleProgress = useCallback((state: { played: number; playedSeconds: number; loaded: number }) => {
+  const handleProgress = useCallback((state: ProgressState) => {
     setPlayedSeconds(state.playedSeconds)
     onProgress?.(state.played)
 
@@ -103,7 +115,6 @@ export default function VideoPlayer({
         )}
 
         <ReactPlayer
-          ref={playerRef}
           url={vimeoUrl}
           width="100%"
           height="100%"
@@ -117,12 +128,9 @@ export default function VideoPlayer({
           onPause={handlePause}
           config={{
             vimeo: {
-              playerOptions: {
-                title: false,
-                byline: false,
-                portrait: false,
-                responsive: true,
-              },
+              title: false,
+              byline: false,
+              portrait: false,
             },
           }}
         />
