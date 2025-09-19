@@ -28,22 +28,61 @@ export default function VideoPlayer({
   const [error, setError] = useState<string | null>(null)
   const [duration, setDuration] = useState<number | null>(null)
   const [playedSeconds, setPlayedSeconds] = useState(0)
+  const [debugInfo, setDebugInfo] = useState<string>('')
 
   // Remove ref for now - not needed for basic video playback
   // const playerRef = useRef<ReactPlayer>(null)
 
   // Create the Vimeo URL for react-player
   const vimeoUrl = `https://vimeo.com/${video.vimeo_id}`
+  const vimeoEmbedUrl = `https://player.vimeo.com/video/${video.vimeo_id}`
+
+  // Debug logging
+  console.log('VideoPlayer Debug:', {
+    vimeoId: video.vimeo_id,
+    vimeoUrl,
+    vimeoEmbedUrl,
+    videoTitle: video.title,
+    isPublished: video.is_published
+  })
 
   const handleReady = useCallback(() => {
     setLoading(false)
     setError(null)
-  }, [])
+    setDebugInfo('')
+    console.log('Video loaded successfully:', video.title)
+  }, [video.title])
 
   const handleError = useCallback((error: unknown) => {
     setLoading(false)
-    setError('Failed to load video. Please try again.')
-    console.error('Video player error:', error)
+    console.error('Video player error details:', error)
+
+    let errorMessage = 'Failed to load video. '
+    let debugDetails = ''
+
+    if (error && typeof error === 'object') {
+      const errorObj = error as any
+      if (errorObj.message) {
+        debugDetails += `Message: ${errorObj.message}. `
+      }
+      if (errorObj.status) {
+        debugDetails += `Status: ${errorObj.status}. `
+      }
+    }
+
+    // Common Vimeo error scenarios
+    if (String(error).includes('403') || String(error).includes('Forbidden')) {
+      errorMessage += 'This video may have domain restrictions. Check privacy settings in Vimeo.'
+      debugDetails += 'Likely cause: Domain not whitelisted in Vimeo privacy settings.'
+    } else if (String(error).includes('404') || String(error).includes('Not Found')) {
+      errorMessage += 'Video not found or may require privacy hash parameter.'
+      debugDetails += 'Likely cause: Video is unlisted and needs privacy hash, or video ID is incorrect.'
+    } else {
+      errorMessage += 'Please check if the video exists and is publicly accessible.'
+    }
+
+    setError(errorMessage)
+    setDebugInfo(debugDetails)
   }, [])
 
   const handleProgress = useCallback((state: ProgressState) => {
@@ -87,6 +126,14 @@ export default function VideoPlayer({
           </div>
           <h3 className="text-lg font-semibold text-gray-800 mb-2">Video Error</h3>
           <p className="text-gray-600 mb-4">{error}</p>
+          {debugInfo && (
+            <details className="mb-4 text-left">
+              <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
+                Debug Information
+              </summary>
+              <p className="mt-2 text-xs text-gray-500 bg-gray-50 p-2 rounded">{debugInfo}</p>
+            </details>
+          )}
           <button
             onClick={() => {
               setError(null)
@@ -134,6 +181,32 @@ export default function VideoPlayer({
             },
           }}
         />
+
+        {/* Debug: Test iframe for comparison */}
+        {process.env.NODE_ENV === 'development' && (
+          <div className="mt-4 p-2 bg-yellow-50 border border-yellow-200 rounded">
+            <h4 className="text-sm font-medium text-yellow-800 mb-2">Debug: Direct Vimeo Iframe</h4>
+            <iframe
+              src={vimeoEmbedUrl}
+              width="300"
+              height="169"
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowFullScreen
+              className="rounded"
+              onError={(e) => {
+                console.error('Iframe error:', e)
+                console.log('Iframe URL:', vimeoEmbedUrl)
+              }}
+              onLoad={() => {
+                console.log('Iframe loaded successfully:', vimeoEmbedUrl)
+              }}
+            />
+            <p className="text-xs text-yellow-700 mt-1">
+              If this iframe works but react-player doesn't, it's a react-player compatibility issue.
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Video Info */}

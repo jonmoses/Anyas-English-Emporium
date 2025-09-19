@@ -3,6 +3,7 @@
 import { useEffect, useCallback } from 'react'
 import { Video } from '@/types/video'
 import VideoPlayer from './VideoPlayer'
+import VideoDebugHelper from './VideoDebugHelper'
 
 interface VideoModalProps {
   video: Video | null
@@ -98,6 +99,9 @@ export default function VideoModal({ video, isOpen, onClose, onProgress, onCompl
               </div>
             )}
           </div>
+
+          {/* Debug Helper - only in development */}
+          <VideoDebugHelper video={video} />
         </div>
       </div>
     </div>
