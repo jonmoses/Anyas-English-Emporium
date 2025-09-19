@@ -32,15 +32,38 @@ This is a standard Next.js App Router application with the following structure:
 - TypeScript 5
 - Tailwind CSS 4 with PostCSS integration
 - Geist font family from Google Fonts
+- Supabase for database and authentication
+- react-player for video playback
+- @vimeo/player for Vimeo-specific features
+
+## Video Integration
+
+The platform uses Vimeo for video hosting with the following features:
+- **Video Streaming**: Videos are hosted on Vimeo and streamed via react-player
+- **Progress Tracking**: User watch progress is saved in Supabase
+- **Search & Filtering**: Videos can be filtered by level, category, and search terms
+- **Responsive Player**: Video player works across all devices
+- **Thumbnail Display**: Vimeo thumbnails are automatically fetched and displayed
+
+### Database Schema
+- `videos` table: Stores video metadata (Vimeo ID, title, description, etc.)
+- `user_video_progress` table: Tracks user watch progress and completion
+
+### Key Files
+- `/src/lib/vimeo.ts` - Vimeo API utilities
+- `/src/lib/videos.ts` - Video database operations
+- `/src/components/VideoPlayer.tsx` - Main video player component
+- `/src/components/VideoModal.tsx` - Fullscreen video modal
+- `/supabase/migrations/` - Database schema migrations
 
 ## Planned Features
 
-- User authentication and account management
 - Subscription billing and payment processing
-- Video streaming and playback
-- Course organization and progress tracking
 - Admin panel for content management
-- Mobile-responsive design for cross-device learning
+- Course playlists and organization
+- Video comments and discussions
+- Completion certificates
+- Advanced analytics
 
 ## Notes
 
