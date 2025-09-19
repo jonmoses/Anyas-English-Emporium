@@ -70,13 +70,13 @@ export default function VideoDebugHelper({ video }: VideoDebugHelperProps) {
             <h4 className="font-semibold text-blue-800 mb-2">🔧 Troubleshooting Steps:</h4>
             <ol className="list-decimal list-inside space-y-2 text-xs text-gray-700">
               <li>
-                <strong>Test direct access:</strong> Click "Test on Vimeo" above - does the video play on Vimeo?
+                <strong>Test direct access:</strong> Click &quot;Test on Vimeo&quot; above - does the video play on Vimeo?
               </li>
               <li>
-                <strong>Check privacy settings:</strong> Click "Privacy Settings" above, then:
+                <strong>Check privacy settings:</strong> Click &quot;Privacy Settings&quot; above, then:
                 <ul className="list-disc list-inside ml-4 mt-1 space-y-1">
-                  <li>Ensure video is "Public" or "Unlisted" (not "Private")</li>
-                  <li>In "Where can this video be embedded?" - select "Anywhere" or add your domain</li>
+                  <li>Ensure video is &quot;Public&quot; or &quot;Unlisted&quot; (not &quot;Private&quot;)</li>
+                  <li>In &quot;Where can this video be embedded?&quot; - select &quot;Anywhere&quot; or add your domain</li>
                   <li>Add your domains: <code>localhost:3000</code>, your Vercel domain, etc.</li>
                 </ul>
               </li>
@@ -94,8 +94,8 @@ export default function VideoDebugHelper({ video }: VideoDebugHelperProps) {
             <div className="mt-3 p-2 bg-yellow-100 rounded">
               <strong className="text-yellow-800">Common Issue:</strong>
               <p className="text-xs text-yellow-700 mt-1">
-                If you see a black screen, it's usually because your domain (localhost:3000, your-app.vercel.app)
-                is not whitelisted in the Vimeo video's "Where can this video be embedded?" privacy settings.
+                If you see a black screen, it&apos;s usually because your domain (localhost:3000, your-app.vercel.app)
+                is not whitelisted in the Vimeo video&apos;s &quot;Where can this video be embedded?&quot; privacy settings.
               </p>
             </div>
           </div>

@@ -61,6 +61,7 @@ export default function VideoPlayer({
     let debugDetails = ''
 
     if (error && typeof error === 'object') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const errorObj = error as any
       if (errorObj.message) {
         debugDetails += `Message: ${errorObj.message}. `
@@ -203,7 +204,7 @@ export default function VideoPlayer({
               }}
             />
             <p className="text-xs text-yellow-700 mt-1">
-              If this iframe works but react-player doesn't, it's a react-player compatibility issue.
+              If this iframe works but react-player doesn&apos;t, it&apos;s a react-player compatibility issue.
             </p>
           </div>
         )}
