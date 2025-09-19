@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { videoService } from '@/lib/videos'
 import { VideoWithProgress, VideoFilters, VideoLevel } from '@/types/video'
@@ -38,13 +38,7 @@ export default function VideoLessonsTab() {
     return 'bg-gray-300'
   }
 
-  // Load videos and categories on component mount
-  useEffect(() => {
-    loadVideos()
-    loadCategories()
-  }, [user, filters])
-
-  const loadVideos = async () => {
+  const loadVideos = useCallback(async () => {
     try {
       setLoading(true)
       let videoData: VideoWithProgress[]
@@ -62,7 +56,13 @@ export default function VideoLessonsTab() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [user, filters])
+
+  // Load videos and categories on component mount
+  useEffect(() => {
+    loadVideos()
+    loadCategories()
+  }, [loadVideos])
 
   const loadCategories = async () => {
     try {
@@ -187,6 +187,7 @@ export default function VideoLessonsTab() {
               <div className="aspect-video bg-gray-200 flex items-center justify-center relative overflow-hidden">
                 {video.thumbnail_url ? (
                   <>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={video.thumbnail_url}
                       alt={video.title}

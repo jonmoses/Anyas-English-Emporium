@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef } from 'react'
 import ReactPlayer from 'react-player'
-import { Video, VideoPlayerProps } from '@/types/video'
+import { VideoPlayerProps } from '@/types/video'
 import VimeoAPI from '@/lib/vimeo'
 
 export default function VideoPlayer({
@@ -28,7 +28,7 @@ export default function VideoPlayer({
     setError(null)
   }, [])
 
-  const handleError = useCallback((error: any) => {
+  const handleError = useCallback((error: unknown) => {
     setLoading(false)
     setError('Failed to load video. Please try again.')
     console.error('Video player error:', error)
