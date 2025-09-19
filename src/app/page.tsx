@@ -9,7 +9,7 @@ export default function HomePage() {
 
         {/* The main headline */}
         <h1 className="text-5xl font-bold text-gray-800">
-          Anya's English Emporium
+          Anya&apos;s English Emporium
         </h1>
 
         {/* The subheading */}
